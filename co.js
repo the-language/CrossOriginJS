@@ -16,6 +16,7 @@
 var http_get=(function(){
 var c=0;
 function tmp(){
+	c+=1;
 	return "tmp"+c;
 }
 function http_get(file, callback) {
