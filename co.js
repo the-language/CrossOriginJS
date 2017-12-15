@@ -22,13 +22,16 @@ function alloc_cb() {
 			return i;}}
 	return _$CB$z.length;
 }
-function http_get(file, callback) {
+function http_get(file, callback, onerr) {
 	var cb=alloc_cb();
 	var script=document.createElement('script');
 	_$CB$z[cb]=function(x) {
 		_$CB$z[cb]=null;
 		document.body.removeChild(script);
-		callback(x);};
+		if(x===false) {
+			onerr();
+		} else {
+			callback(x);}};
 	script.src=host+"/get.php?cb="+encodeURIComponent("_$CB$z["+cb+"]")+"&x="+encodeURIComponent(file);
 	document.body.appendChild(script);
 }
