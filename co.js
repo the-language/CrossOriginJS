@@ -13,19 +13,24 @@
 
 //  You should have received a copy of the GNU Affero General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+var _$CB$z=[];
 var http_get=(function(){
-var c=0;
-function tmp(){
-	c+=1;
-	return "tmp"+c;
+var host="http://zaoqi.byethost7.com"
+function alloc_cb() {
+	for(var i=0;i<_$CB$z.length;i++) {
+		if(_$CB$z[i]===null) {
+			return i;}}
+	return _$CB$z.length;
 }
 function http_get(file, callback) {
-	var cbf=tmp();
-	eval(cbf+"=("+callback.toString()+");");
+	var cb=alloc_cb();
 	var script=document.createElement('script');
-	var head=(document.getElementsByTagName('head'))[0];
-	head.appendChild(script);
-	script.src="http://zaoqi.byethost7.com/get.php?cb="+cbf+"&x="+file;
+	_$CB$z[cb]=function(x) {
+		_$CB$z[cb]=null;
+		document.body.removeChild(script);
+		callback(x);};
+	script.src=host+"/get.php?cb="+encodeURIComponent("_$CB$z["+cb+"]")+"&x="+encodeURIComponent(file);
+	document.body.appendChild(script);
 }
 return http_get;
 })();
