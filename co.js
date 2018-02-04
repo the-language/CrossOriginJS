@@ -15,7 +15,8 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 var _$CO$_=[];
 var CrossOrigin=(function(){
-var host=throw "?";
+var host="";
+throw "請填寫CrossOrigin-host";
 
 var uri=encodeURIComponent;
 
