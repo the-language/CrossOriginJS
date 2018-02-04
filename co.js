@@ -1,5 +1,5 @@
 //  CrossOriginJS
-//  Copyright (C) 2017  Zaoqi
+//  Copyright (C) 2017-2018  Zaoqi
 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU Affero General Public License as published
@@ -13,27 +13,41 @@
 
 //  You should have received a copy of the GNU Affero General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-var _$CB$z=[];
-var http_get=(function(){
-var host="http://zaoqi.byethost7.com"
-function alloc_cb() {
-	for(var i=0;i<_$CB$z.length;i++) {
-		if(_$CB$z[i]===null) {
-			return i;}}
-	return _$CB$z.length;
-}
+var _$CO$_=[];
+var CrossOrigin=(function(){
+var host=throw "?";
+
+var uri=encodeURIComponent;
+
+var scripts=[];
+var free_cbs=[];
+function uri_cb(callback){
+	var i=free_cbs.pop();
+	if(i===null){i=_$CO$_.length;}
+	_$CO$_[i]=function(x){
+		_$CO$_[i]=null;
+		free_cbs.push(i);
+		callback(x);};
+	return uri("_$CO$_["+i+"]");}
+function alloc_script(src){
+	var script=scripts.pop();
+	if(script===null){
+		script=document.createElement('script');
+		script.src=src;
+		document.body.appendChild(script);
+		return script;
+	}else{
+		script.src=src;
+		return script;}}
+function free_script(x){scripts.push(x);}
+
 function http_get(file, callback, onerr) {
-	var cb=alloc_cb();
-	var script=document.createElement('script');
-	_$CB$z[cb]=function(x) {
-		_$CB$z[cb]=null;
-		document.body.removeChild(script);
+	var script;
+	var cb=uri_cb(function(x){
+		free_script(script);
 		if(x===false) {
-			onerr();
+			onerr&&onerr();
 		} else {
-			callback(x);}};
-	script.src=host+"/get.php?cb="+encodeURIComponent("_$CB$z["+cb+"]")+"&x="+encodeURIComponent(file);
-	document.body.appendChild(script);
-}
-return http_get;
-})();
+			callback(x);}});
+	script=alloc_script(host+"/get.php?cb="+cb+"&x="+uri(file););}
+return {get: http_get};})();

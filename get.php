@@ -1,6 +1,6 @@
 <?php
 //  CrossOriginJS
-//  Copyright (C) 2017  Zaoqi
+//  Copyright (C) 2017-2018  Zaoqi
 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU Affero General Public License as published
@@ -18,6 +18,5 @@ function send2js($data, $callback) {
 	$j=json_encode($data);
 	echo $callback . "(" . $j . ");";
 }
-$cb=$_GET["cb"];
-send2js(file_get_contents($_GET["x"]), $cb);
+send2js(file_get_contents($_GET["x"]), $_GET["cb"]);
 ?>
